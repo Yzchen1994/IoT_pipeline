@@ -16,13 +16,10 @@ while(True):
 	faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 	for (x,y,w,h) in faces:
 		print("x, y, w, h = ", x, y, w, h)
-		# your logic goes here; for instance
 		# cut out face from the frame.. 
-		# rc,png = cv2.imencode('.png', face)
-		# msg = png.tobytes()
-		# ...
 		face_gray = gray[y:y+h, x:x+w]
-		face_color = img[y:y+h, x:x+w]
 		rc,png = cv2.imencode('.png', face_gray)
 		msg = png.tobytes()
-		remote_mqttclient.publish(REMOTE_MQTT_TOPIC, payload=msg, qos=0, retain=False)
+		# print('png bytes:', msg)
+		# Send to MQTT forwarder. 		
+		# remote_mqttclient.publish(REMOTE_MQTT_TOPIC, payload=msg, qos=0, retain=False)
