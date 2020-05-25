@@ -2,6 +2,8 @@
 import paho.mqtt.client as mqtt	
 from datetime import datetime
 import time
+import numpy as np
+import cv2
 
 LOCAL_MQTT_HOST="mqttbroker"
 LOCAL_MQTT_PORT=1883
@@ -18,11 +20,16 @@ def on_message(client,userdata, msg):
 		print("message received!")	
 		# if we wanted to re-publish this message, something like this should work
 		msg = msg.payload
+		
+		# decode img (https://stackoverflow.com/questions/17170752/python-opencv-load-image-from-byte-string)
+		nparr = np.fromstring(msg, np.uint8)
+		img_np = cv2.imdecode(nparr, cv2.CV_LOAD_IMAGE_COLOR)
+
 		time_now = datetime.now()
 		file_name = '{}.png'.format(time.time())
 		file_path = MNT_PATH + file_name
 		with open(file_path, 'w+') as f:
-			f.write(msg)
+			f.write(img_np)
 			f.close()
 			print("written to file: {}".format(file_name))
 	except:
