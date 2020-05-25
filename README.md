@@ -89,5 +89,14 @@ docker network create --driver bridge hw03
 ## Spin up MQTT broker on the cloud
 ```
 docker build -t mqttbroker -f Dockerfile.mqttbrokerserver .
-docker run --name mqttbroker --network hw03 -p 1883:1883 -v /home/root/IoT_pipeline:/hw3 --rm -ti mqttbroker
+docker run --name mqttbroker --network hw03 -p 1883:1883 -v /root/IoT_pipeline:/hw3 --rm -ti mqttbroker
+```
+
+## Spin up Image Processor on the cloud
+```
+docker build -t imageprocessor -f Dockerfile.imageprocessorserver .
+docker run --name imageprocessor --network hw03 -v /root/IoT_pipeline:/hw3 -ti imageprocessor
+# Run processor
+cd /hw3
+python3 image_processor_cloud.py
 ```

@@ -4,7 +4,7 @@ LOCAL_MQTT_HOST="mqttbroker"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC="face_detection_topic"
 
-REMOTE_MQTT_HOST="169.62.41.222"
+REMOTE_MQTT_HOST="169.62.41.122"
 REMOTE_MQTT_PORT=1883
 REMOTE_MQTT_TOPIC="face_detection_topic"
 remote_mqttclient=mqtt.Client()
