@@ -24,6 +24,7 @@ def on_message(client,userdata, msg):
 		with open(file_path, 'w+') as f:
 			f.write(msg)
 			f.close()
+			print("written to file: {}".format(file_name))
 	except:
 		print("Unexpected error:", sys.exc_info()[0])
 
