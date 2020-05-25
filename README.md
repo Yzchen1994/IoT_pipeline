@@ -104,5 +104,5 @@ python3 image_processor_cloud.py
 ## Setup Object Storage on Server
 Endpoint: 
 ```
-http://s3.wdc.us.cloud-object-storage.appdomain.cloud/cloud-object-storage-bb-cos-standard-5r1/
+
 ```
