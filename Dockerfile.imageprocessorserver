@@ -1,11 +1,25 @@
-FROM alpine:3.7
+FROM ubuntu:18.04
 
-RUN apk update
+RUN apt-get update && apt-get clean
 
 # Install python3
-RUN apk add python3
-# RUN apk add 
+# Python package management and basic dependencies
+RUN apt-get install -y curl python3.7 python3.7-dev python3.7-distutils
+
+# Register the version in alternatives
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.7 1
+
+# Set python 3 as the default python
+RUN update-alternatives --set python /usr/bin/python3.7
+
+# Upgrade pip to latest version
+RUN curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    python get-pip.py --force-reinstall && \
+    rm get-pip.py
 
 # Install MQTT
-RUN apk add mosquitto-clients
-RUN pip3 install paho-mqtt
+RUN apt-get install -y mosquitto-clients
+RUN pip install paho-mqtt
+
+# Install s3fs
+RUN apt-get install -y s3fs
