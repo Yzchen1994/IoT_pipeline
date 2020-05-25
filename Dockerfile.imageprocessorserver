@@ -27,6 +27,7 @@ RUN pip install paho-mqtt
 # Install python packages
 RUN pip install Cython
 RUN pip install numpy
+RUN pip install opencv-python
 
 # Install s3fs
 RUN apt-get install -y s3fs
