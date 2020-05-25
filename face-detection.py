@@ -1,6 +1,14 @@
 import numpy as np
 import cv2
+import paho.mqtt.client as mqtt
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+# Setup remote MQTT connection
+REMOTE_MQTT_HOST="mqttbroker"
+REMOTE_MQTT_PORT=1883
+REMOTE_MQTT_TOPIC="face_detection_topic"
+remote_mqttclient = mqtt.Client()
+remote_mqttclient.connect(REMOTE_MQTT_HOST, REMOTE_MQTT_PORT, 360)
 
 # 1 should correspond to /dev/video1 , your USB camera. The 0 is reserved for the TX2 onboard camera
 cap = cv2.VideoCapture(0)
@@ -22,4 +30,4 @@ while(True):
 		msg = png.tobytes()
 		# print('png bytes:', msg)
 		# Send to MQTT forwarder. 		
-		# remote_mqttclient.publish(REMOTE_MQTT_TOPIC, payload=msg, qos=0, retain=False)
+		remote_mqttclient.publish(REMOTE_MQTT_TOPIC, payload=msg, qos=0, retain=False)
