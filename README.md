@@ -125,3 +125,8 @@ Run processor
 cd /hw3
 python3 image_processor_cloud.py
 ```
+
+# Object storage bucket URL
+```
+http://s3.us-east.cloud-object-storage.appdomain.cloud/cloud-object-storage-sj-cos-standard-qpp/
+```
