@@ -1,14 +1,10 @@
-import paho.mqtt.client as mqtt
+# Run on cloud
+import paho.mqtt.client as mqtt	
+from datetime import datetime
 
 LOCAL_MQTT_HOST="mqttbroker"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC="face_detection_topic"
-
-REMOTE_MQTT_HOST="169.62.41.222"
-REMOTE_MQTT_PORT=1883
-REMOTE_MQTT_TOPIC="face_detection_topic"
-remote_mqttclient=mqtt.Client()
-remote_mqttclient.connect(REMOTE_MQTT_HOST, REMOTE_MQTT_PORT, 360)
 
 def on_connect_local(client, userdata, flags, rc):
         print("connected to local broker with rc: " + str(rc))
@@ -19,9 +15,8 @@ def on_message(client,userdata, msg):
 		print("message received!")	
 		# if we wanted to re-publish this message, something like this should work
 		msg = msg.payload
-		print(msg)
-
-		remote_mqttclient.publish(REMOTE_MQTT_TOPIC, payload=msg, qos=0, retain=False)
+		print(datetime.now())
+		print("received message", msg)
 	except:
 		print("Unexpected error:", sys.exc_info()[0])
 

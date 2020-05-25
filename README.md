@@ -81,6 +81,11 @@ apt-get update
 apt-get install docker-ce
 ```
 
+## Create a bridge:
+```
+docker network create --driver bridge hw03
+```
+
 ## Spin up MQTT broker on the cloud
 ```
 docker build -t mqttbroker -f Dockerfile.mqttbrokerserver .
