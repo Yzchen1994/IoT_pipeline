@@ -24,5 +24,9 @@ RUN curl -s https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
 RUN apt-get install -y mosquitto-clients
 RUN pip install paho-mqtt
 
+# Install python packages
+RUN pip install Cython
+RUN pip install numpy
+
 # Install s3fs
 RUN apt-get install -y s3fs
