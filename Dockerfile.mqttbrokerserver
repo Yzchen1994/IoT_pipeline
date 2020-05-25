@@ -1,0 +1,4 @@
+FROM arm64v8/alpine:3.7
+# install mosquitto
+RUN apk update && apk add mosquitto
+CMD /usr/sbin/mosquitto
