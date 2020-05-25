@@ -23,15 +23,13 @@ def on_message(client,userdata, msg):
 		
 		# decode img (https://stackoverflow.com/questions/17170752/python-opencv-load-image-from-byte-string)
 		nparr = np.fromstring(msg, np.uint8)
-		img_np = cv2.imdecode(nparr, cv2.CV_LOAD_IMAGE_COLOR)
+		img_np = cv2.imdecode(nparr, cv2.IMREAD_GRAYSCALE)
 
 		time_now = datetime.now()
 		file_name = '{}.png'.format(time.time())
 		file_path = MNT_PATH + file_name
-		with open(file_path, 'w+') as f:
-			f.write(img_np)
-			f.close()
-			print("written to file: {}".format(file_name))
+		cv2.imwrite(file_path, img_np)
+		print("successfully written to file:{}".format(file_name))
 	except:
 		print("Unexpected error:", sys.exc_info()[0])
 
