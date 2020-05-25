@@ -1,52 +1,41 @@
-# Configure networks
-## Create a bridge:
+# HW 3 Overview
+In this homework, there are 3 docker images built on Jetson TX2: cv2, mqttbroker, mqttforwarder. cv2 is used to process face detection from a live camera stream. The detected face images are sent to mqttforwarder via mqttbroker through topic "face_detection_topic". The mqttforwarder then pass the binary image to cloud. 
+
+There are 2 containers set up on the IBM cloud: mqttbrokerserver, imageprocessorserver. The binary image from Jetson TX2 are passed to imageprocessorserver via mqttbrokerserver through the topic "face_detection_topic". Once imageprocessorserver received the image, it will sent to IBM Object Storage by using the FUSE mounted drive on the container. 
+
+# Object Storage Bucket URL
+```
+http://s3.us-east.cloud-object-storage.appdomain.cloud/cloud-object-storage-sj-cos-standard-qpp/
+```
+
+# Setup on Jetson TX2
+## Configure networks:
 ```
 docker network create --driver bridge hw03
 ```
 
-# Spin up the face detector docker image
+## Spin up the face detector docker image
 ```
 docker build -t cv2 -f Dockerfile.cv2 .
 docker run -e DISPLAY=$DISPLAY --privileged --name cv2 --network hw03 -v /home/nvidia/Desktop/hw3:/hw3 -ti cv2
 ```
 
-# Spin up MQTT broker 
+## Spin up MQTT broker 
 ```
 docker build -t mqttbroker -f Dockerfile.mqttbroker .
 docker run --name mqttbroker --network hw03 -p 1883:1883 -v /home/nvidia/Desktop/hw3:/hw3 --rm -ti mqttbroker
 ```
 
-# Spin up MQTT Forwarder
-## Docker setup
+## Spin up MQTT Forwarder
+### Docker setup
 ```
 docker build -t mqttforwarder -f Dockerfile.mqttforwarder .
 docker run --name mqttforwarder --network hw03 -v /home/nvidia/Desktop/hw3:/hw3 -ti mqttforwarder
 ```
-## Run mqttforwarder.py
+### Run mqttforwarder.py
 ```
 cd /hw3
 python3 mqttforwarder.py
-```
-
-# Useful tools
-## Stop all running containers
-```
-docker stop $(docker ps -aq)
-```
-
-## Remove all containers
-```
-docker rm $(docker ps -aq)
-```
-
-## Remove network
-```
-docker network rm hw03
-```
-
-## Force stop 1883 port
-```
-fuser -k 1883/tcp
 ```
 
 # Cloud configuration
@@ -126,7 +115,24 @@ cd /hw3
 python3 image_processor_cloud.py
 ```
 
-# Object storage bucket URL
+# Useful Docker Commands
+## Stop all running containers
 ```
-http://s3.us-east.cloud-object-storage.appdomain.cloud/cloud-object-storage-sj-cos-standard-qpp/
+docker stop $(docker ps -aq)
 ```
+
+## Remove all containers
+```
+docker rm $(docker ps -aq)
+```
+
+## Remove network
+```
+docker network rm hw03
+```
+
+## Force stop 1883 port
+```
+fuser -k 1883/tcp
+```
+
