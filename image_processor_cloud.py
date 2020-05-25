@@ -1,10 +1,13 @@
 # Run on cloud
 import paho.mqtt.client as mqtt	
 from datetime import datetime
+import time
 
 LOCAL_MQTT_HOST="mqttbroker"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC="face_detection_topic"
+
+MNT_PATH="/mnt/mybucket"
 
 def on_connect_local(client, userdata, flags, rc):
         print("connected to local broker with rc: " + str(rc))
@@ -15,8 +18,12 @@ def on_message(client,userdata, msg):
 		print("message received!")	
 		# if we wanted to re-publish this message, something like this should work
 		msg = msg.payload
-		print(datetime.now())
-		print("received message", msg)
+		time_now = datetime.now()
+		file_name = '{}.png'.format(time.time())
+		file_path = MNT_PATH + file_name
+		with open(file_path, 'w+') as f:
+			f.write(msg)
+			f.close()
 	except:
 		print("Unexpected error:", sys.exc_info()[0])
 

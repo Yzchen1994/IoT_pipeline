@@ -95,14 +95,33 @@ docker run --name mqttbroker --network hw03 -p 1883:1883 -v /root/IoT_pipeline:/
 ## Spin up Image Processor on the cloud
 ```
 docker build -t imageprocessor -f Dockerfile.imageprocessorserver .
-docker run --name imageprocessor --network hw03 -v /root/IoT_pipeline:/hw3 -ti imageprocessor
-# Run processor
+docker run --name imageprocessor --network hw03 -v /root/IoT_pipeline:/hw3 --priviledged -ti imageprocessor
+```
+
+Setup s3fs
+In order to configure s3fs-fuse, you need your access key id, your secret access key, the name of the bucket you want to mount, and the endpoint for the If you are using the Infrastructure variation of Cloud Object Storage (i.e. softlayer), you can get these values from the ObjectStorage section in the Control Portal. If you are using the new version of IBM Cloud Object storage, you will need to go to Service Credentials, New Credential (be sure to check the HMAC checkbox), and then click "view credential". You will see a JSON file, so just look for the cos_hmac_keys section:
+```
+#   "cos_hmac_keys": {
+#    "access_key_id": "somekey",
+#    "secret_access_key": "somesecretkey"
+#  },
+```
+
+Substitue your values for <Access_Key_ID> and <Secret_Access_Key> in the below command.
+```
+echo "<Access_Key_ID>:<Secret_Access_Key>" > $HOME/.cos_creds
+chmod 600 $HOME/.cos_creds
+```
+
+Create a directory where you can mount your bucket. Typically, this is done in the /mnt directory on Linux, notice the bucket is created in the IBM Cloud UI
+```
+mkdir -m 777 /mnt/mybucket
+s3fs cloud-object-storage-sj-cos-standard-qpp /mnt/mybucket -o passwd_file=$HOME/.cos_creds -o sigv2 -o use_path_request_style -o url=https://s3.us-east.cloud-object-storage.appdomain.cloud
+
+```
+
+Run processor
+```
 cd /hw3
 python3 image_processor_cloud.py
-```
-
-## Setup Object Storage on Server
-Endpoint: 
-```
-
 ```
