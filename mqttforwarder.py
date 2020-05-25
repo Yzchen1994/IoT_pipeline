@@ -21,7 +21,7 @@ def on_message(client,userdata, msg):
 		msg = msg.payload
 		print(msg)
 
-		remote_mqttclient.publish(REMOTE_MQTT_TOPIC, payload=msg, qos=0, retain=False)
+		remote_mqttclient.publish(REMOTE_MQTT_TOPIC, payload=msg, qos=2, retain=False)
 	except:
 		print("Unexpected error:", sys.exc_info()[0])
 
