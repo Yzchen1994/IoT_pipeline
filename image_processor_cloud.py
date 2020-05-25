@@ -7,7 +7,7 @@ LOCAL_MQTT_HOST="mqttbroker"
 LOCAL_MQTT_PORT=1883
 LOCAL_MQTT_TOPIC="face_detection_topic"
 
-MNT_PATH="/mnt/mybucket"
+MNT_PATH="/mnt/mybucket/"
 
 def on_connect_local(client, userdata, flags, rc):
         print("connected to local broker with rc: " + str(rc))
