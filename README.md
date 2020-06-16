@@ -1,4 +1,4 @@
-# HW 3 Overview
+# HW 7 Overview
 In this homework, there are 3 docker images built on Jetson TX2: cv2, mqttbroker, mqttforwarder. cv2 is used to process face detection from a live camera stream. The detected face images are sent to mqttforwarder via mqttbroker through topic "face_detection_topic". The QoS is set to 2 to ensure each face image is delivered. The mqttforwarder then pass the binary image to cloud. 
 
 There are 2 containers set up on the IBM cloud: mqttbrokerserver, imageprocessorserver. The binary image from Jetson TX2 are passed to imageprocessorserver via mqttbrokerserver through the topic "face_detection_topic". Once imageprocessorserver received the image, it will sent to IBM Object Storage by using the FUSE mounted drive on the container. 
